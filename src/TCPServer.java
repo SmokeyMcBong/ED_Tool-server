@@ -18,12 +18,11 @@ public class TCPServer extends Thread {
 
     public static void main(String[] args) {
 
-        //opens the window where the messages will be received and sent
-        ServerBoard frame = new ServerBoard();
+        // open the main gui
+        CustomServerBoard frame = new CustomServerBoard();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-
     }
 
     /**
@@ -75,7 +74,7 @@ public class TCPServer extends Thread {
                     String message = in.readLine();
 
                     if (message != null && messageListener != null) {
-                        //call the method messageReceived from ServerBoard class
+                        //call the method messageReceived from CustomServerBoard class
                         messageListener.messageReceived(message);
                     }
                 }
@@ -95,10 +94,9 @@ public class TCPServer extends Thread {
 
     }
 
-    //Declare the interface. The method messageReceived(String message) will must be implemented in the ServerBoard
+    //Declare the interface. The method messageReceived(String message) will must be implemented in the CustomServerBoard
     //class at on startServer button click
     public interface OnMessageReceived {
         public void messageReceived(String message);
     }
-
 }
