@@ -9,10 +9,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class CustomServerBoard extends JFrame {
-//    private JTextArea messagesArea;
-//    private JTextField message;
+    private JLabel imageHeader;
+    private JLabel imageFooter;
+    private JLabel appInfoFooter;
     private JTextField ipAddressTitle;
     private JTextField ipAddressValue;
+    private JCheckBox autoRun;
     private JButton startServer;
     private JButton stopServerExit;
     private TCPServer mServer;
@@ -31,63 +33,142 @@ public class CustomServerBoard extends JFrame {
         assert IP != null;
         System.out.println("IP of my system is := " + IP.getHostAddress());
 
-        // create new JPanel's
-        JPanel panelFields0 = new JPanel();
-        JPanel panelFields1 = new JPanel();
-        JPanel panelFields2 = new JPanel();
-        JPanel panelFields3 = new JPanel();
-        JPanel panelFields4 = new JPanel();
-        JPanel panelFields5 = new JPanel();
+        //create new Fonts
+        Font fontSmall = new Font("Copperplate Gothic", Font.PLAIN,12);
+        Font fontNormal = new Font("Courier", Font.PLAIN,14);
+        Font fontLarge = new Font("Copperplate Gothic", Font.PLAIN,16);
 
+        // GUI HERE ....
+        // create new JPanel's
+        JPanel panelFields_imageHeader = new JPanel();
+        JPanel panelFields_iconHolder = new JPanel();
+        JPanel panelFields_ImageFooter = new JPanel();
+        JPanel panelFields_appName = new JPanel();
+        JPanel panelFields_appInfo = new JPanel();
+        JPanel panelFields_appInfoFooter = new JPanel();
+        JPanel panelFields_startServer = new JPanel();
+        JPanel panelFields_stopServer = new JPanel();
+        JPanel panelFields_ipAddress = new JPanel();
+        JPanel panelFields_autoRun = new JPanel();
+
+        imageHeader = new JLabel();
+        imageHeader.setSize(100, 100);
+        imageHeader.setFont(fontNormal);
+        imageHeader.setOpaque(true);
+        imageHeader.setBackground(Color.black);
+        imageHeader.setText(" ");
+
+// TODO - add small separators between components to spruce up the UI a little
         JLabel icon = new JLabel("", JLabel.CENTER);
         // Import ImageIcon
-        ImageIcon iconLogo = new ImageIcon("Images/ic_Launcher.png");
+        ImageIcon iconLogo = new ImageIcon("Images/ic_Launcher_light.png");
         icon.setIcon(iconLogo);
+        icon.setOpaque(true);
+        icon.setBackground(Color.black);
 
-        JLabel appName = new JLabel(" ED_Tool - Server ", JLabel.CENTER);
-        JLabel appInfo = new JLabel(" ( Created by 'theFONZ' ) ", JLabel.CENTER);
+        imageFooter = new JLabel();
+        imageFooter.setText(" ");
+        imageFooter.setSize(100, 100);
+        imageFooter.setFont(fontNormal);
+        imageFooter.setOpaque(true);
+        imageFooter.setBackground(Color.black);
+
+        JLabel appName = new JLabel(" ED_Tool  -  Server ", JLabel.CENTER);
+        appName.setForeground(Color.white);
+        appName.setOpaque(true);
+        appName.setFont(fontLarge);
+        appName.setBackground(Color.black);
+
+        JLabel appInfo = new JLabel(" ( By 'theFONZ' ) ", JLabel.CENTER);
+        appInfo.setForeground(Color.white);
+        appInfo.setOpaque(true);
+        appInfo.setFont(fontSmall);
+        appInfo.setBackground(Color.black);
+
+        appInfoFooter = new JLabel();
+        appInfoFooter.setText(" ");
+        appInfoFooter.setSize(100, 100);
+        appInfoFooter.setFont(fontNormal);
+        appInfoFooter.setOpaque(true);
+        appInfoFooter.setBackground(Color.black);
 
         JButton startServer = new JButton("Start Server");
         JButton stopServerExit = new JButton("Stop Server and Exit");
 
         ipAddressTitle = new JTextField();
         ipAddressTitle.setEditable(false);
-        ipAddressTitle.setText("  The IP of this Server is :=  ");
+        ipAddressTitle.setForeground(Color.lightGray);
+        ipAddressTitle.setOpaque(true);
+        ipAddressTitle.setBackground(Color.black);
+        ipAddressTitle.setText("  The IP of this Server is :  ");
 
         ipAddressValue = new JTextField();
         ipAddressValue.setEditable(false);
-        //create new Font
-        Font font = new Font("Courier", Font.BOLD,16);
-        ipAddressValue.setFont(font);
+        ipAddressValue.setForeground(Color.white);
+        ipAddressValue.setOpaque(true);
+        ipAddressValue.setBackground(Color.black);
+        ipAddressValue.setFont(fontNormal);
         ipAddressValue.setText(" " + IP.getHostAddress() + " ");
 
-        panelFields0.setLayout(new BoxLayout(panelFields0, BoxLayout.X_AXIS));
-        panelFields1.setLayout(new BoxLayout(panelFields1, BoxLayout.X_AXIS));
-        panelFields2.setLayout(new BoxLayout(panelFields2, BoxLayout.X_AXIS));
-        panelFields3.setLayout(new BoxLayout(panelFields3, BoxLayout.X_AXIS));
-        panelFields4.setLayout(new BoxLayout(panelFields4, BoxLayout.X_AXIS));
-        panelFields5.setLayout(new BoxLayout(panelFields5, BoxLayout.X_AXIS));
+        autoRun = new JCheckBox();
+        autoRun.setForeground(Color.white);
+        autoRun.setOpaque(true);
+        autoRun.setBackground(Color.black);
+        autoRun.setFont(fontSmall);
+        autoRun.setText("Auto-Start Server on app startup ?");
+
+        panelFields_imageHeader.setLayout(new BoxLayout(panelFields_imageHeader, BoxLayout.X_AXIS));
+        panelFields_iconHolder.setLayout(new BoxLayout(panelFields_iconHolder, BoxLayout.X_AXIS));
+        panelFields_ImageFooter.setLayout(new BoxLayout(panelFields_ImageFooter, BoxLayout.X_AXIS));
+        panelFields_appName.setLayout(new BoxLayout(panelFields_appName, BoxLayout.X_AXIS));
+        panelFields_appInfo.setLayout(new BoxLayout(panelFields_appInfo, BoxLayout.X_AXIS));
+        panelFields_appInfoFooter.setLayout(new BoxLayout(panelFields_appInfoFooter, BoxLayout.X_AXIS));
+        panelFields_startServer.setLayout(new BoxLayout(panelFields_startServer, BoxLayout.X_AXIS));
+        panelFields_stopServer.setLayout(new BoxLayout(panelFields_stopServer, BoxLayout.X_AXIS));
+        panelFields_ipAddress.setLayout(new BoxLayout(panelFields_ipAddress, BoxLayout.X_AXIS));
 
         //add the buttons and the text fields to the panel
-        panelFields0.add(icon);
+        panelFields_imageHeader.add(imageHeader);
 
-        panelFields1.add(appName);
+        panelFields_iconHolder.add(icon);
 
-        panelFields2.add(appInfo);
+        panelFields_ImageFooter.add(imageFooter);
 
-        panelFields3.add(startServer);
+        panelFields_appName.add(appName);
 
-        panelFields4.add(stopServerExit);
+        panelFields_appInfo.add(appInfo);
 
-        panelFields5.add(ipAddressTitle);
-        panelFields5.add(ipAddressValue);
+        panelFields_appInfoFooter.add(appInfoFooter);
 
-//        // Send the connected status back to the android client...
-//        // create connection status string
-//        String messageText = " something,something ";
-//        // send the message to the client
-//        mServer.sendMessage(messageText);
-//        // simples.
+        panelFields_startServer.add(startServer);
+
+        panelFields_stopServer.add(stopServerExit);
+
+        panelFields_ipAddress.add(ipAddressTitle);
+        panelFields_ipAddress.add(ipAddressValue);
+
+        panelFields_autoRun.setBackground(Color.black);
+        panelFields_autoRun.add(autoRun);
+
+        // add final JPanel's to main gui
+        getContentPane().add(panelFields_imageHeader);
+        getContentPane().add(panelFields_iconHolder);
+        getContentPane().add(panelFields_ImageFooter);
+        getContentPane().add(panelFields_appName);
+        getContentPane().add(panelFields_appInfo);
+        getContentPane().add(panelFields_appInfoFooter);
+        getContentPane().add(panelFields_startServer);
+        getContentPane().add(panelFields_stopServer);
+        getContentPane().add(panelFields_autoRun);
+        getContentPane().add(panelFields_ipAddress);
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        getContentPane().setBackground(Color.black);
+        setSize(400, 170);
+        setVisible(true);
+
+        // The Business End HERE ...
+
+
 
         startServer.addActionListener(new ActionListener() {
             @Override
@@ -106,7 +187,7 @@ public class CustomServerBoard extends JFrame {
 //                        messagesArea.append(" " + message);
                         String key = message;
                         try {
-                            // Send incoming data (test/message) to CustomKeyMapRobot to process
+                            // Send incoming data (key) to CustomKeyMapRobot to process
                             // and send the correct SendKeys
                             new CustomKeyMapRobot(key);
                         } catch (AWTException e1) {
@@ -123,7 +204,7 @@ public class CustomServerBoard extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     mServer.interrupt();
-                    while(!Thread.currentThread().isInterrupted()) {
+                    while (!Thread.currentThread().isInterrupted()) {
                         try {
                             System.out.println("S: Exiting");
                             Thread.sleep(10);
@@ -138,20 +219,10 @@ public class CustomServerBoard extends JFrame {
                 }
                 {
                     System.out.println("S: Exiting");
+//                TCPServer.stopServer();
                     System.exit(0);
                 }
             }
         });
-
-        // add final JPanel's to main gui
-        getContentPane().add(panelFields0);
-        getContentPane().add(panelFields1);
-        getContentPane().add(panelFields2);
-        getContentPane().add(panelFields3);
-        getContentPane().add(panelFields4);
-        getContentPane().add(panelFields5);
-        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        setSize(400, 170);
-        setVisible(true);
     }
 }

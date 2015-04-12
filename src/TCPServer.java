@@ -2,6 +2,7 @@
  * Created by the_FONZ on 06/04/2015.
  */
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,6 +23,8 @@ public class TCPServer extends Thread {
         CustomServerBoard frame = new CustomServerBoard();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setBackground(Color.black);
         frame.setVisible(true);
     }
 
@@ -43,7 +46,7 @@ public class TCPServer extends Thread {
             mOut.flush();
         }
     }
-
+// TODO - add checks for connection lost/client disconnect
     @Override
     public void run() {
         super.run();
@@ -51,19 +54,25 @@ public class TCPServer extends Thread {
         running = true;
 
         try {
-            System.out.println("S: Connecting...");
-
             //create a server socket. A server socket waits for requests to come in over the network.
             ServerSocket serverSocket = new ServerSocket(SERVERPORT);
+            System.out.println(" S: Openning Connection, Awaiting Client ... ");
 
             //create client socket... the method accept() listens for a connection to be made to this socket and accepts it.
             Socket client = serverSocket.accept();
-            System.out.println("S: Receiving...");
 
             try {
-
                 //sends the message to the client
                 mOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
+                System.out.println(" S: Client Connected, All is GOOD ! ");
+                String messageText = "handshakeAccepted";
+                try {
+                    sendMessage(messageText);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println(" S: Looks like messageText didnt make it ! " + e);
+                }
+
 
                 //read the message received from client
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -72,13 +81,11 @@ public class TCPServer extends Thread {
                 //this while it's like a listener for messages
                 while (running) {
                     String message = in.readLine();
-
                     if (message != null && messageListener != null) {
                         //call the method messageReceived from CustomServerBoard class
                         messageListener.messageReceived(message);
                     }
                 }
-
             } catch (Exception e) {
                 System.out.println("S: Error");
                 e.printStackTrace();
@@ -86,12 +93,10 @@ public class TCPServer extends Thread {
                 client.close();
                 System.out.println("S: Done.");
             }
-
         } catch (Exception e) {
             System.out.println("S: Error");
             e.printStackTrace();
         }
-
     }
 
     //Declare the interface. The method messageReceived(String message) will must be implemented in the CustomServerBoard
