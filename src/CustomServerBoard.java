@@ -58,10 +58,9 @@ public class CustomServerBoard extends JFrame {
         imageHeader.setBackground(Color.black);
         imageHeader.setText(" ");
 
-// TODO - add small separators between components to spruce up the UI a little
         JLabel icon = new JLabel("", JLabel.CENTER);
         // Import ImageIcon
-        ImageIcon iconLogo = new ImageIcon("Images/ic_Launcher_light.png");
+        ImageIcon iconLogo =  new ImageIcon(getClass().getResource("/imagelight.PNG"));
         icon.setIcon(iconLogo);
         icon.setOpaque(true);
         icon.setBackground(Color.black);
