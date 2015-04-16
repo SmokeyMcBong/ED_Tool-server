@@ -72,7 +72,7 @@ public class CustomServerBoard extends JFrame {
         imageFooter.setOpaque(true);
         imageFooter.setBackground(Color.black);
 
-        JLabel appName = new JLabel(" ED_Tool  -  Server ", JLabel.CENTER);
+        JLabel appName = new JLabel(" ED_Tool - Server  [v1.2] ", JLabel.CENTER);
         appName.setForeground(Color.white);
         appName.setOpaque(true);
         appName.setFont(fontLarge);

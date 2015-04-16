@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Created by the_FONZ on 07/04/2015.
  */
-// TODO - use arrays to store the key and value to compare with the input string
+
 public class CustomKeyMapRobot {
     public CustomKeyMapRobot(String key)  throws AWTException {
         try {
@@ -266,6 +266,48 @@ public class CustomKeyMapRobot {
                 robot.delay(5);
             }else if (Objects.equals(key, "{DIVIDE}")) {
                 robot.keyPress(KeyEvent.VK_DIVIDE);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{CONTROL}")) {
+                robot.keyPress(KeyEvent.VK_CONTROL);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{SHIFT}")) {
+                robot.keyPress(KeyEvent.VK_SHIFT);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{ALT}")) {
+                robot.keyPress(KeyEvent.VK_ALT);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{SLASH}")) {
+                robot.keyPress(KeyEvent.VK_SLASH);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{BACKSLASH}")) {
+                robot.keyPress(KeyEvent.VK_BACK_SLASH);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{COMMA}")) {
+                robot.keyPress(KeyEvent.VK_COMMA);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{EQUALS}")) {
+                robot.keyPress(KeyEvent.VK_EQUALS);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{OPENBRACKET}")) {
+                robot.keyPress(KeyEvent.VK_OPEN_BRACKET);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{CLOSEBRACKET}")) {
+                robot.keyPress(KeyEvent.VK_CLOSE_BRACKET);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{PERIOD}")) {
+                robot.keyPress(KeyEvent.VK_PERIOD);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{QUOTE}")) {
+                robot.keyPress(KeyEvent.VK_QUOTE);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{BACKQUOTE}")) {
+                robot.keyPress(KeyEvent.VK_BACK_QUOTE);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{SEMICOLON}")) {
+                robot.keyPress(KeyEvent.VK_SEMICOLON);
+                robot.delay(5);
+            }else if (Objects.equals(key, "{DECIMAL}")) {
+                robot.keyPress(KeyEvent.VK_DECIMAL);
                 robot.delay(5);
             }
         } catch (AWTException e) {
