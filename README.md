@@ -23,8 +23,8 @@ Brief..
 ------------
 
 Elite:Dangerous Windows Application (A Windows SendKey Server to be used with ED_Tool Android Application (client))  
-This project goes hand in hand with https://github.com/SmokeyMcBong/ED_Tool, this is the sendkey server to receive the  
-sendkey requests from the android device and then to send them to the game
+This project goes hand in hand with https://github.com/SmokeyMcBong/ED_Tool.  
+This is the sendkey server to receive the sendkey requests from the android device and then to send them to the game
 
 <br />
 
