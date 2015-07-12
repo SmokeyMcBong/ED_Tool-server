@@ -7,19 +7,13 @@
 -------
 <br />
 
-<br />  
-
 <center>ED-Tool-server</center>
 ==========================================
 <center>Elite:Dangerous Windows Application (A Windows SendKey Server to be used with ED_Tool Android Application (client)</center>
 
 <center>==========================================</center>
 
-<br />
-<center>
-![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server1.png) 
-![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server2.png) 
-![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server3.png) 
+<center>![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server1.png).![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server2.png).![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server3.png) 
 </center>
 
 <br />
@@ -28,22 +22,28 @@
 Brief..
 ------------
 
-Elite:Dangerous Windows Application (A Windows SendKey Server to be used with ED_Tool Android Application (client) )
+Elite:Dangerous Windows Application (A Windows SendKey Server to be used with ED_Tool Android Application (client))  
+This project goes hand in hand with https://github.com/SmokeyMcBong/ED_Tool, this is the sendkey server to receive the  
+sendkey requests from the android device and then to send them to the game
 
 <br />
 
 Current Features..
 ------------
-* 
+* Fully Working TCP/Sendkey Server
+* Displays the current server IP address for connecting to using the android device
+* Launch Elite:Dangerous Game option (Only enabled when server is running)
+* Auto-start the server upon running ED_Tool-server (*To be added soon)
+* Lightweight GUI and base code
 
 
 <br />
 
 Planned Feature's..
 ------------
+* Add Help tips/menu
+* Re-design the UI
 * Make some functions a bit smarter with automation
-
-<br />
 
 
 <br />
