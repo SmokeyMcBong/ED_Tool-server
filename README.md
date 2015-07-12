@@ -1,7 +1,7 @@
 -------
 | BRAND NEW :  ED_Tool-server |
 | :------------: |
-| Download Latest Version : [ soon |
+| Download Latest Version :  soon |
 | Show all Releases : [ View all Releases ](https://github.com/SmokeyMcBong/ED_Tool-server/releases) |
 
 -------
