@@ -9,7 +9,11 @@
 
 <br />  
 
-<center>"*** Elite:Dangerous Windows Application (A Windows SendKey Server to be used with ED_Tool Android Application (client) )  !***"</center>
+<center>ED-Tool-server</center>
+==========================================
+<center>Elite:Dangerous Windows Application (A Windows SendKey Server to be used with ED_Tool Android Application (client)</center>
+
+<center>==========================================</center>
 
 <br />
 <center>
@@ -30,7 +34,7 @@ Elite:Dangerous Windows Application (A Windows SendKey Server to be used with ED
 
 Current Features..
 ------------
-
+* 
 
 
 <br />
