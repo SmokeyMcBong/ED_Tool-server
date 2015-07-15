@@ -81,7 +81,7 @@ public class CustomServerBoard extends JFrame {
         //create new Fonts
         Font fontSmall = new Font("Copperplate Gothic", Font.PLAIN,12);
         Font fontNormal = new Font("Courier", Font.PLAIN,14);
-        Font fontLarge = new Font("Copperplate Gothic", Font.PLAIN,16);
+        Font fontLarge = new Font("Copperplate Gothic", Font.PLAIN,14);
 
         // GUI HERE ....
         // create new JPanel's
@@ -100,91 +100,106 @@ public class CustomServerBoard extends JFrame {
 
         imageHeader = new JLabel();
         imageHeader.setSize(100, 100);
-        imageHeader.setFont(fontNormal);
+        imageHeader.setFont(fontSmall);
         imageHeader.setOpaque(true);
-        imageHeader.setBackground(Color.black);
-        imageHeader.setText(" ");
+        imageHeader.setBackground(Color.decode("#008080"));
+        imageHeader.setForeground(Color.WHITE);
+        imageHeader.setText(" ED_Tool - Server v2.0.0   [RC-15/07]   ");
 
         JLabel icon = new JLabel("", JLabel.CENTER);
         // Import ImageIcon
         ImageIcon iconLogo =  new ImageIcon(getClass().getResource("/imagelight.PNG"));
         icon.setIcon(iconLogo);
         icon.setOpaque(true);
-        icon.setBackground(Color.black);
+        icon.setBackground(Color.darkGray);
 
         imageFooter = new JLabel();
         imageFooter.setText(" ");
         imageFooter.setSize(100, 100);
         imageFooter.setFont(fontNormal);
         imageFooter.setOpaque(true);
-        imageFooter.setBackground(Color.black);
+        imageFooter.setBackground(Color.darkGray);
 
-        JLabel appName = new JLabel(" ED_Tool - Server  [v2.0.0] ", JLabel.CENTER);
+        JLabel appName = new JLabel("", JLabel.CENTER);
         appName.setForeground(Color.white);
         appName.setOpaque(true);
         appName.setFont(fontLarge);
-        appName.setBackground(Color.black);
+        appName.setBackground(Color.darkGray);
 
         JLabel appInfo = new JLabel(" ( By 'theFONZ' ) ", JLabel.CENTER);
         appInfo.setForeground(Color.white);
         appInfo.setOpaque(true);
         appInfo.setFont(fontSmall);
-        appInfo.setBackground(Color.black);
+        appInfo.setBackground(Color.darkGray);
 
         appInfoFooter = new JLabel();
         appInfoFooter.setText(" ");
         appInfoFooter.setSize(100, 100);
         appInfoFooter.setFont(fontNormal);
         appInfoFooter.setOpaque(true);
-        appInfoFooter.setBackground(Color.black);
+        appInfoFooter.setBackground(Color.darkGray);
 
         startServer = new JButton("Start Server");
+        startServer.setBackground(Color.lightGray);
+        startServer.setForeground(Color.WHITE);
+        startServer.setFont(fontLarge);
+        startServer.setToolTipText("Start the ED_Tool-server");
+
         stopServerExit = new JButton("Exit to Desktop");
+        stopServerExit.setBackground(Color.lightGray);
+        stopServerExit.setForeground(Color.WHITE);
+        stopServerExit.setFont(fontLarge);
+        stopServerExit.setToolTipText("Stop the ED_Tool-server and Exit to Desktop");
 
         ipAddressTitle = new JTextField();
         ipAddressTitle.setEditable(false);
         ipAddressTitle.setForeground(Color.lightGray);
         ipAddressTitle.setOpaque(true);
-        ipAddressTitle.setBackground(Color.black);
+        ipAddressTitle.setBackground(Color.darkGray);
         ipAddressTitle.setText("  The IP of this Server is :  ");
 
         ipAddressValue = new JTextField();
         ipAddressValue.setEditable(false);
         ipAddressValue.setForeground(Color.white);
         ipAddressValue.setOpaque(true);
-        ipAddressValue.setBackground(Color.black);
+        ipAddressValue.setBackground(Color.darkGray);
         ipAddressValue.setFont(fontNormal);
         ipAddressValue.setText(" " + IP.getHostAddress() + " ");
 
         autoRun = new JCheckBox();
         autoRun.setForeground(Color.white);
         autoRun.setOpaque(true);
-        autoRun.setBackground(Color.black);
+        autoRun.setBackground(Color.darkGray);
         autoRun.setFont(fontSmall);
         autoRun.setText("Auto-Start Server on app startup ?");
+        autoRun.setToolTipText("Set the app to Auto-Start the ED_Tool-server on launch");
         autoRun.setEnabled(false);
 
         startGame = new JButton("Launch E:D  (server isn't running yet)");
         startGame.setEnabled(false);
+        startGame.setBackground(Color.lightGray);
+        startGame.setForeground(Color.WHITE);
+        startGame.setFont(fontLarge);
+        startGame.setToolTipText("Launch Elite:Dangerous Game");
 
         startGameFooter = new JLabel();
         startGameFooter.setText(" ");
         startGameFooter.setSize(100, 100);
         startGameFooter.setFont(fontSmall);
         startGameFooter.setOpaque(true);
-        startGameFooter.setBackground(Color.black);
+        startGameFooter.setBackground(Color.darkGray);
 
-        panelFields_imageHeader.setLayout(new BoxLayout(panelFields_imageHeader, BoxLayout.X_AXIS));
-        panelFields_iconHolder.setLayout(new BoxLayout(panelFields_iconHolder, BoxLayout.X_AXIS));
-        panelFields_ImageFooter.setLayout(new BoxLayout(panelFields_ImageFooter, BoxLayout.X_AXIS));
-        panelFields_appName.setLayout(new BoxLayout(panelFields_appName, BoxLayout.X_AXIS));
-        panelFields_appInfo.setLayout(new BoxLayout(panelFields_appInfo, BoxLayout.X_AXIS));
-        panelFields_appInfoFooter.setLayout(new BoxLayout(panelFields_appInfoFooter, BoxLayout.X_AXIS));
-        panelFields_startServer.setLayout(new BoxLayout(panelFields_startServer, BoxLayout.X_AXIS));
-        panelFields_stopServer.setLayout(new BoxLayout(panelFields_stopServer, BoxLayout.X_AXIS));
+        panelFields_imageHeader.setLayout(new BorderLayout());
+        panelFields_iconHolder.setLayout(new BorderLayout());
+        panelFields_ImageFooter.setLayout(new BorderLayout());
+        panelFields_appName.setLayout(new BorderLayout());
+        panelFields_appInfo.setLayout(new BorderLayout());
+        panelFields_appInfoFooter.setLayout(new BorderLayout());
+        panelFields_startServer.setLayout(new BorderLayout());
+        panelFields_stopServer.setLayout(new BorderLayout());
         panelFields_ipAddress.setLayout(new BoxLayout(panelFields_ipAddress, BoxLayout.X_AXIS));
-        panelFields_startGame.setLayout(new BoxLayout(panelFields_startGame, BoxLayout.X_AXIS));
-        panelFields_startGameFooter.setLayout(new BoxLayout(panelFields_startGameFooter, BoxLayout.X_AXIS));
+        panelFields_startGame.setLayout(new BorderLayout());
+        panelFields_startGameFooter.setLayout(new BorderLayout());
 
         //add the buttons and the text fields to the panel
         panelFields_imageHeader.add(imageHeader);
@@ -206,7 +221,7 @@ public class CustomServerBoard extends JFrame {
         panelFields_ipAddress.add(ipAddressTitle);
         panelFields_ipAddress.add(ipAddressValue);
 
-        panelFields_autoRun.setBackground(Color.black);
+        panelFields_autoRun.setBackground(Color.darkGray);
         panelFields_autoRun.add(autoRun);
 
         panelFields_startGame.add(startGame);
@@ -215,8 +230,8 @@ public class CustomServerBoard extends JFrame {
 
         // add final JPanel's to main gui
         getContentPane().add(panelFields_imageHeader);
-        getContentPane().add(panelFields_iconHolder);
         getContentPane().add(panelFields_ImageFooter);
+        getContentPane().add(panelFields_iconHolder);
         getContentPane().add(panelFields_appName);
         getContentPane().add(panelFields_appInfo);
         getContentPane().add(panelFields_appInfoFooter);
@@ -227,8 +242,10 @@ public class CustomServerBoard extends JFrame {
         getContentPane().add(panelFields_autoRun);
         getContentPane().add(panelFields_ipAddress);
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        getContentPane().setBackground(Color.black);
-        setSize(400, 170);
+        getContentPane().setBackground(Color.darkGray);
+        setPreferredSize(new Dimension(290, 595));
+        setResizable(false);
+//        setSize(500, 170);
         setVisible(true);
 
         // The Business End HERE ...
@@ -240,6 +257,8 @@ public class CustomServerBoard extends JFrame {
                 startGame.setEnabled(true);
                 startGame.setText("> Launch Elite: Dangerous <");
                 stopServerExit.setText("Stop Server and Exit");
+                stopServerExit.setFocusable(false);
+                startGame.setFocusable(true);
 
                 //creates the object OnMessageReceived asked by the TCPServer constructor
                 mServer = new TCPServer(new TCPServer.OnMessageReceived() {

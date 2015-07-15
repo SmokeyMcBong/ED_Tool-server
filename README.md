@@ -13,7 +13,8 @@
 
 <center>==========================================</center>
 
-<center>![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server1.png).![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server2.png).![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server3.png) 
+<center>![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server1.png). 
+![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server2.png).![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server3.png) 
 </center>
 
 <br />
@@ -66,4 +67,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details.  
 
 You should have received a copy of the GNU General Public License
-along with this program. See COPYING.txt in project root
+along with this program. See LICENSE in project root
