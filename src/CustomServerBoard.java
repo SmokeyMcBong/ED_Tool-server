@@ -104,7 +104,7 @@ public class CustomServerBoard extends JFrame {
         imageHeader.setOpaque(true);
         imageHeader.setBackground(Color.decode("#008080"));
         imageHeader.setForeground(Color.WHITE);
-        imageHeader.setText(" ED_Tool - Server v2.0.0   [RC-15/07]   ");
+        imageHeader.setText(" ED_Tool - Server v2.0.0   [RC-16/07]   ");
 
         JLabel icon = new JLabel("", JLabel.CENTER);
         // Import ImageIcon
@@ -254,11 +254,8 @@ public class CustomServerBoard extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 startServer.setEnabled(false);
                 startServer.setText("Server Started || Awaiting client");
-                startGame.setEnabled(true);
-                startGame.setText("> Launch Elite: Dangerous <");
+                startGame.setText("Launch E:D  (Awaiting client)");
                 stopServerExit.setText("Stop Server and Exit");
-                stopServerExit.setFocusable(false);
-                startGame.setFocusable(true);
 
                 //creates the object OnMessageReceived asked by the TCPServer constructor
                 mServer = new TCPServer(new TCPServer.OnMessageReceived() {
@@ -267,8 +264,15 @@ public class CustomServerBoard extends JFrame {
                     //this method is actually a callback method, because it will run every time when it will be called from
                     //TCPServer class (at while)
                     public void messageReceived(String message) {
-                        startServer.setText("Server Started || Connected");
-                        startGame.setText(">> Launch Elite: Dangerous <<");
+                        // check to see if the message was the connection verification message, if it is then change
+                        // the buttons text to reflect this
+                        if (message == "OK"); {
+                            startServer.setText("Server Started || Connected");
+                            startGame.setEnabled(true);
+                            startGame.setText(">> Launch Elite: Dangerous <<");
+                            stopServerExit.setFocusable(false);
+                            startGame.setFocusable(true);
+                        }
 //                        messagesArea.append(" " + message);
                         String key = message;
                         try {
