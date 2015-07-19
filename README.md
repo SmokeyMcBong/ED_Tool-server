@@ -35,16 +35,15 @@ Current Features..
 * Displays the current server IP address for connecting to using the android device
 * Launch Elite:Dangerous Game option (Only enabled when server is running)
 * Auto-start the server upon running ED_Tool-server (*To be added soon)
-* Lightweight GUI and base code
+* Updated Lightweight GUI and base code
+* ToolTips
 
 
 <br />
 
 Planned Feature's..
 ------------
-* Add Help tips/menu
-* Re-design the UI
-* Make some functions a bit smarter with automation
+* Make some functions a little smarter with automation
 
 
 <br />
