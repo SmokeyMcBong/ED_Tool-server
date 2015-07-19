@@ -46,7 +46,7 @@ public class TCPServer extends Thread {
             mOut.flush();
         }
     }
-// TODO - add checks for connection lost/client disconnect
+    // TODO - add checks for connection lost/client disconnect
     @Override
     public void run() {
         super.run();

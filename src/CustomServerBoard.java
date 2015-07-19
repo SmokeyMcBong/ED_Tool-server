@@ -104,7 +104,7 @@ public class CustomServerBoard extends JFrame {
         imageHeader.setOpaque(true);
         imageHeader.setBackground(Color.decode("#008080"));
         imageHeader.setForeground(Color.WHITE);
-        imageHeader.setText(" ED_Tool - Server v2.0.0   [RC-16/07]   ");
+        imageHeader.setText(" ED_Tool - Server v2.0.0   [RC-19/07]   ");
 
         JLabel icon = new JLabel("", JLabel.CENTER);
         // Import ImageIcon
@@ -245,7 +245,6 @@ public class CustomServerBoard extends JFrame {
         getContentPane().setBackground(Color.darkGray);
         setPreferredSize(new Dimension(290, 595));
         setResizable(false);
-//        setSize(500, 170);
         setVisible(true);
 
         // The Business End HERE ...
@@ -266,18 +265,18 @@ public class CustomServerBoard extends JFrame {
                     public void messageReceived(String message) {
                         // check to see if the message was the connection verification message, if it is then change
                         // the buttons text to reflect this
-                        if (message == "OK"); {
+                        if (message == "OK") ;
+                        {
                             startServer.setText("Server Started || Connected");
                             startGame.setEnabled(true);
                             startGame.setText(">> Launch Elite: Dangerous <<");
                             stopServerExit.setFocusable(false);
                             startGame.setFocusable(true);
                         }
-//                        messagesArea.append(" " + message);
                         String key = message;
+                        // Send incoming data (key) to CustomKeyMapRobot to process
+                        // and send the correct SendKeys
                         try {
-                            // Send incoming data (key) to CustomKeyMapRobot to process
-                            // and send the correct SendKeys
                             new CustomKeyMapRobot(key);
                         } catch (AWTException e1) {
                             e1.printStackTrace();
@@ -289,26 +288,25 @@ public class CustomServerBoard extends JFrame {
         });
 
         stopServerExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    mServer.interrupt();
-                    while (!Thread.currentThread().isInterrupted()) {
-                        try {
-                            System.out.println("S: Exiting");
-                            Thread.sleep(10);
-                            System.exit(0);
-                        } catch (InterruptedException f) {
-                            Thread.currentThread().interrupt();
+                @Override
+                public void actionPerformed (ActionEvent e){
+                    try {
+                        mServer.interrupt();
+                        while (!Thread.currentThread().isInterrupted()) {
+                            try {
+                                System.out.println("S: Exiting");
+                                Thread.sleep(10);
+                                System.exit(0);
+                            } catch (InterruptedException f) {
+                                Thread.currentThread().interrupt();
+                            }
                         }
+                    } catch (Exception w) {
+                        w.printStackTrace();
+                        System.out.println("W: mServer was not already connected to client > " + w);
                     }
-                } catch (Exception w) {
-                    w.printStackTrace();
-                    System.out.println("W: mServer was not already connected to client > " + w);
-                }
-                {
+                    {
                     System.out.println("S: Exiting");
-//                TCPServer.stopServer();
                     System.exit(0);
                 }
             }
