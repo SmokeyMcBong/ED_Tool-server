@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class CustomServerBoard extends JFrame {
@@ -104,7 +105,7 @@ public class CustomServerBoard extends JFrame {
         imageHeader.setOpaque(true);
         imageHeader.setBackground(Color.decode("#008080"));
         imageHeader.setForeground(Color.WHITE);
-        imageHeader.setText(" ED_Tool - Server v2.0.0   [RC-19/07]   ");
+        imageHeader.setText(" ED_Tool - Server v2.0.0   [RC-22/07]   ");
 
         JLabel icon = new JLabel("", JLabel.CENTER);
         // Import ImageIcon
@@ -265,8 +266,7 @@ public class CustomServerBoard extends JFrame {
                     public void messageReceived(String message) {
                         // check to see if the message was the connection verification message, if it is then change
                         // the buttons text to reflect this
-                        if (message == "OK") ;
-                        {
+                        if (Objects.equals(message, "OK")) {
                             startServer.setText("Server Started || Connected");
                             startGame.setEnabled(true);
                             startGame.setText(">> Launch Elite: Dangerous <<");
@@ -288,24 +288,24 @@ public class CustomServerBoard extends JFrame {
         });
 
         stopServerExit.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed (ActionEvent e){
-                    try {
-                        mServer.interrupt();
-                        while (!Thread.currentThread().isInterrupted()) {
-                            try {
-                                System.out.println("S: Exiting");
-                                Thread.sleep(10);
-                                System.exit(0);
-                            } catch (InterruptedException f) {
-                                Thread.currentThread().interrupt();
-                            }
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    mServer.interrupt();
+                    while (!Thread.currentThread().isInterrupted()) {
+                        try {
+                            System.out.println("S: Exiting");
+                            Thread.sleep(10);
+                            System.exit(0);
+                        } catch (InterruptedException f) {
+                            Thread.currentThread().interrupt();
                         }
-                    } catch (Exception w) {
-                        w.printStackTrace();
-                        System.out.println("W: mServer was not already connected to client > " + w);
                     }
-                    {
+                } catch (Exception w) {
+                    w.printStackTrace();
+                    System.out.println("W: mServer was not already connected to client > " + w);
+                }
+                {
                     System.out.println("S: Exiting");
                     System.exit(0);
                 }

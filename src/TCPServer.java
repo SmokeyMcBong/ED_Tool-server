@@ -6,6 +6,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Objects;
 
 /**
  * The class extends the Thread class so we can receive and send messages at the same time
@@ -73,7 +74,6 @@ public class TCPServer extends Thread {
                     System.out.println(" S: Looks like messageText didnt make it ! " + e);
                 }
 
-
                 //read the message received from client
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
@@ -84,6 +84,12 @@ public class TCPServer extends Thread {
                     if (message != null && messageListener != null) {
                         //call the method messageReceived from CustomServerBoard class
                         messageListener.messageReceived(message);
+                    }
+                    if (Objects.equals(message, "SERVER_RESTART")) {
+                        // call the tcp restart and await reconnection
+                        System.out.println("received request for restart");
+                        serverSocket.close();
+                        run();
                     }
                 }
             } catch (Exception e) {
