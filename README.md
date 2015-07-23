@@ -34,7 +34,8 @@ Current Features..
 * Fully Working TCP/Sendkey Server
 * Displays the current server IP address for connecting to using the android device
 * Launch Elite:Dangerous Game option (Only enabled when server is running)
-* Auto-start the server upon running ED_Tool-server (*To be added soon)
+* Auto-start the server upon running ED_Tool-server
+* Auto remote server restart and connection
 * Updated Lightweight GUI and base code
 * ToolTips
 

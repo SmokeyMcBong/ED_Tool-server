@@ -19,11 +19,11 @@ public class CustomServerBoard extends JFrame {
     JTextField ipAddressTitle;
     JTextField ipAddressValue;
     JCheckBox autoRun;
-    JButton startServer;
-    JButton stopServerExit;
-    JButton startGame;
+    static JButton startServer;
+    static JButton stopServerExit;
+    static JButton startGame;
 
-    private TCPServer mServer;
+    private static TCPServer mServer;
 
     public CustomServerBoard() {
 
@@ -35,9 +35,9 @@ public class CustomServerBoard extends JFrame {
 
         // Check if location.conf exists, if it does then read the verified location from the file to a usable string
         File f = new File("data/usr/location.conf");
-        if(f.exists() && !f.isDirectory()) {
+        if (f.exists() && !f.isDirectory()) {
             try {
-                String verifiedLocation = new Scanner( new File("data/usr/location.conf") ).useDelimiter("\\A").next();
+                String verifiedLocation = new Scanner(new File("data/usr/location.conf")).useDelimiter("\\A").next();
                 System.out.println(verifiedLocation);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -49,28 +49,25 @@ public class CustomServerBoard extends JFrame {
                 Process p = Runtime.getRuntime().exec("data/bin/getRegLocation.bat");
                 BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 String line;
-                while(true) {
+                while (true) {
                     line = input.readLine();
-                    if(line == null) {
+                    if (line == null) {
                         break;
                     }
                     //create a print writer for writing to a file
                     PrintWriter out = new PrintWriter(new FileWriter("data/usr/location.conf"));
-
                     //output to the file a line
-                    out.println(line+"\\EDLaunch.exe");
-
+                    out.println(line + "\\EDLaunch.exe");
                     //close the file
                     out.close();
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                 e.printStackTrace();
             }
         }
 
         // check for host ip address and show the user
-        InetAddress IP= null;
+        InetAddress IP = null;
         try {
             IP = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
@@ -80,9 +77,9 @@ public class CustomServerBoard extends JFrame {
         System.out.println("IP of my system is := " + IP.getHostAddress());
 
         //create new Fonts
-        Font fontSmall = new Font("Copperplate Gothic", Font.PLAIN,12);
-        Font fontNormal = new Font("Courier", Font.PLAIN,14);
-        Font fontLarge = new Font("Copperplate Gothic", Font.PLAIN,14);
+        Font fontSmall = new Font("Copperplate Gothic", Font.PLAIN, 12);
+        Font fontNormal = new Font("Courier", Font.PLAIN, 14);
+        Font fontLarge = new Font("Copperplate Gothic", Font.PLAIN, 14);
 
         // GUI HERE ....
         // create new JPanel's
@@ -105,11 +102,10 @@ public class CustomServerBoard extends JFrame {
         imageHeader.setOpaque(true);
         imageHeader.setBackground(Color.decode("#008080"));
         imageHeader.setForeground(Color.WHITE);
-        imageHeader.setText(" ED_Tool - Server v2.0.0   [RC-22/07]   ");
+        imageHeader.setText(" ED_Tool - Server v2.0.0   [RC-23/07]   ");
 
         JLabel icon = new JLabel("", JLabel.CENTER);
-        // Import ImageIcon
-        ImageIcon iconLogo =  new ImageIcon(getClass().getResource("/imagelight.PNG"));
+        ImageIcon iconLogo = new ImageIcon(getClass().getResource("/imagelight.PNG"));
         icon.setIcon(iconLogo);
         icon.setOpaque(true);
         icon.setBackground(Color.darkGray);
@@ -174,7 +170,6 @@ public class CustomServerBoard extends JFrame {
         autoRun.setFont(fontSmall);
         autoRun.setText("Auto-Start Server on app startup ?");
         autoRun.setToolTipText("Set the app to Auto-Start the ED_Tool-server on launch");
-        autoRun.setEnabled(false);
 
         startGame = new JButton("Launch E:D  (server isn't running yet)");
         startGame.setEnabled(false);
@@ -204,29 +199,18 @@ public class CustomServerBoard extends JFrame {
 
         //add the buttons and the text fields to the panel
         panelFields_imageHeader.add(imageHeader);
-
         panelFields_iconHolder.add(icon);
-
         panelFields_ImageFooter.add(imageFooter);
-
         panelFields_appName.add(appName);
-
         panelFields_appInfo.add(appInfo);
-
         panelFields_appInfoFooter.add(appInfoFooter);
-
         panelFields_startServer.add(startServer);
-
         panelFields_stopServer.add(stopServerExit);
-
         panelFields_ipAddress.add(ipAddressTitle);
         panelFields_ipAddress.add(ipAddressValue);
-
         panelFields_autoRun.setBackground(Color.darkGray);
         panelFields_autoRun.add(autoRun);
-
         panelFields_startGame.add(startGame);
-
         panelFields_startGameFooter.add(startGameFooter);
 
         // add final JPanel's to main gui
@@ -248,67 +232,33 @@ public class CustomServerBoard extends JFrame {
         setResizable(false);
         setVisible(true);
 
+        // check for autostart file, if it exists then set jcheckbox accordingly and
+        // then autostart the server
+        File as = new File("data/usr/autostart");
+        if (as.exists()) {
+            autoRun.setSelected(true);
+            startServer();
+            try {
+                Thread.sleep(500);                 //1000 milliseconds is one second.
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        } else {
+            autoRun.setSelected(false);
+        }
+
         // The Business End HERE ...
         startServer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startServer.setEnabled(false);
-                startServer.setText("Server Started || Awaiting client");
-                startGame.setText("Launch E:D  (Awaiting client)");
-                stopServerExit.setText("Stop Server and Exit");
-
-                //creates the object OnMessageReceived asked by the TCPServer constructor
-                mServer = new TCPServer(new TCPServer.OnMessageReceived() {
-
-                    //this method declared in the interface from TCPServer class is implemented here
-                    //this method is actually a callback method, because it will run every time when it will be called from
-                    //TCPServer class (at while)
-                    public void messageReceived(String message) {
-                        // check to see if the message was the connection verification message, if it is then change
-                        // the buttons text to reflect this
-                        if (Objects.equals(message, "OK")) {
-                            startServer.setText("Server Started || Connected");
-                            startGame.setEnabled(true);
-                            startGame.setText(">> Launch Elite: Dangerous <<");
-                            stopServerExit.setFocusable(false);
-                            startGame.setFocusable(true);
-                        }
-                        String key = message;
-                        // Send incoming data (key) to CustomKeyMapRobot to process
-                        // and send the correct SendKeys
-                        try {
-                            new CustomKeyMapRobot(key);
-                        } catch (AWTException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                });
-                mServer.start();
+                startServer();
             }
         });
 
         stopServerExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    mServer.interrupt();
-                    while (!Thread.currentThread().isInterrupted()) {
-                        try {
-                            System.out.println("S: Exiting");
-                            Thread.sleep(10);
-                            System.exit(0);
-                        } catch (InterruptedException f) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                } catch (Exception w) {
-                    w.printStackTrace();
-                    System.out.println("W: mServer was not already connected to client > " + w);
-                }
-                {
-                    System.out.println("S: Exiting");
-                    System.exit(0);
-                }
+                exitServer();
             }
         });
 
@@ -316,7 +266,7 @@ public class CustomServerBoard extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String exeLocation = new Scanner( new File("data/usr/location.conf")).useDelimiter("\\A").next();
+                    String exeLocation = new Scanner(new File("data/usr/location.conf")).useDelimiter("\\A").next();
                     Runtime.getRuntime().exec(exeLocation);
                 } catch (Exception w) {
                     w.printStackTrace();
@@ -324,5 +274,86 @@ public class CustomServerBoard extends JFrame {
                 }
             }
         });
+
+        autoRun.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get the current state of the checkbox
+                boolean b = autoRun.isSelected();
+                if (b) {
+                    // Check if location.conf exists, if it does then read the verified location from the file to a usable string
+                    File f = new File("data/usr/autostart");
+                    if (!f.exists()) {
+                        try {
+                            f.createNewFile();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                } else {
+                    File f = new File("data/usr/autostart");
+                    if (f.exists()) {
+                        f.delete();
+                    }
+                }
+            }
+        });
+    }
+
+    public void exitServer() {
+        try {
+            mServer.interrupt();
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    System.out.println("S: Exiting");
+                    Thread.sleep(10);
+                    System.exit(0);
+                } catch (InterruptedException f) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        } catch (Exception w) {
+            w.printStackTrace();
+            System.out.println("W: mServer was not already connected to client > " + w);
+        }
+        {
+            System.out.println("S: Exiting");
+            System.exit(0);
+        }
+    }
+
+    public static void startServer() {
+        startServer.setEnabled(false);
+        startServer.setText("Server Started || Awaiting client");
+        startGame.setEnabled(true);
+        startGame.setText("Launch E:D  (Awaiting client)");
+        stopServerExit.setText("Stop Server and Exit");
+
+        //creates the object OnMessageReceived asked by the TCPServer constructor
+        mServer = new TCPServer(new TCPServer.OnMessageReceived() {
+
+            //this method declared in the interface from TCPServer class is implemented here
+            //this method is actually a callback method, because it will run every time when it will be called from
+            //TCPServer class (at while)
+            public void messageReceived(String message) {
+                // check to see if the message was the connection verification message, if it is then change
+                // the buttons text to reflect this
+                if (Objects.equals(message, "OK")) {
+                    startServer.setText("Server Started || Connected");
+                    startGame.setText(">> Launch Elite: Dangerous <<");
+                    stopServerExit.setFocusable(false);
+                    startGame.setFocusable(true);
+                }
+                String key = message;
+                // Send incoming data (key) to CustomKeyMapRobot to process
+                // and send the correct SendKeys
+                try {
+                    new CustomKeyMapRobot(key);
+                } catch (AWTException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        mServer.start();
     }
 }

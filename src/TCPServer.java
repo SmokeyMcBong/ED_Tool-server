@@ -89,7 +89,9 @@ public class TCPServer extends Thread {
                         // call the tcp restart and await reconnection
                         System.out.println("received request for restart");
                         serverSocket.close();
-                        run();
+//                        run();
+                        CustomServerBoard.startServer();
+
                     }
                 }
             } catch (Exception e) {
