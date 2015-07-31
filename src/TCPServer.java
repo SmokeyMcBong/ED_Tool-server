@@ -1,8 +1,8 @@
 /**
- * Created by the_FONZ on 06/04/2015.
+ * Created by theFONZ on 06/04/2015.
  */
-import javax.swing.*;
-import java.awt.*;
+import utils.Constants;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,21 +13,8 @@ import java.util.Objects;
  */
 public class TCPServer extends Thread {
 
-    public static final int SERVERPORT = 4444;
-    private boolean running = false;
     private PrintWriter mOut;
     private OnMessageReceived messageListener;
-
-    public static void main(String[] args) {
-
-        // open the main gui
-        CustomServerBoard frame = new CustomServerBoard();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setBackground(Color.black);
-        frame.setVisible(true);
-    }
 
     /**
      * Constructor of the class
@@ -47,69 +34,59 @@ public class TCPServer extends Thread {
             mOut.flush();
         }
     }
-    // TODO - add checks for connection lost/client disconnect
+
     @Override
     public void run() {
         super.run();
 
-        running = true;
+        boolean running = true;
 
         try {
-            //create a server socket. A server socket waits for requests to come in over the network.
-            ServerSocket serverSocket = new ServerSocket(SERVERPORT);
-            System.out.println(" S: Openning Connection, Awaiting Client ... ");
+            // Create a server socket
+            ServerSocket serverSocket = new ServerSocket(Constants.ServerPort);
 
-            //create client socket... the method accept() listens for a connection to be made to this socket and accepts it.
+            // Create client socket..
             Socket client = serverSocket.accept();
 
             try {
-                //sends the message to the client
+                // Sends the message to the client
                 mOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-                System.out.println(" S: Client Connected, All is GOOD ! ");
-                String messageText = "handshakeAccepted";
+                String messageText = Constants.Handshake_OK;
                 try {
                     sendMessage(messageText);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    System.out.println(" S: Looks like messageText didnt make it ! " + e);
                 }
 
-                //read the message received from client
+                // Read the message received from client
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-                //in this while we wait to receive messages from client (it's an infinite loop)
-                //this while it's like a listener for messages
+                // In this while we wait to receive messages from client (it's an infinite loop)
                 while (running) {
                     String message = in.readLine();
                     if (message != null && messageListener != null) {
-                        //call the method messageReceived from CustomServerBoard class
+                        // Call the method messageReceived from EDTool_Server class
                         messageListener.messageReceived(message);
                     }
-                    if (Objects.equals(message, "SERVER_RESTART")) {
-                        // call the tcp restart and await reconnection
-                        System.out.println("received request for restart");
+                    if (Objects.equals(message, Constants.Restart_Request)) {
+                        // Call the tcp restart and await reconnection
                         serverSocket.close();
-//                        run();
-                        CustomServerBoard.startServer();
-
+                        EDTool_Server.startServer();
                     }
                 }
             } catch (Exception e) {
-                System.out.println("S: Error");
                 e.printStackTrace();
             } finally {
                 client.close();
-                System.out.println("S: Done.");
             }
         } catch (Exception e) {
-            System.out.println("S: Error");
             e.printStackTrace();
         }
     }
 
-    //Declare the interface. The method messageReceived(String message) will must be implemented in the CustomServerBoard
-    //class at on startServer button click
+    // Declare the interface. The method messageReceived(String message) will must be implemented in the ED_Tool-Server
+    // class at on startServer button click
     public interface OnMessageReceived {
-        public void messageReceived(String message);
+        void messageReceived(String message);
     }
 }

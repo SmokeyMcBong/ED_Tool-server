@@ -1,11 +1,10 @@
+/**
+ * Created by theFONZ on 07/04/2015.
+ */
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
-
-/**
- * Created by the_FONZ on 07/04/2015.
- */
 
 /** KeyCodes KeyMap for reference ...
  *
@@ -114,8 +113,8 @@ import java.util.Objects;
  *  End of KeyCodes KeyMap
  */
 
-public class CustomKeyMapRobot {
-    public CustomKeyMapRobot(String key)  throws AWTException {
+public class KeyMapRobot {
+    public KeyMapRobot(String key)  throws AWTException {
         try {
             Robot robot = new Robot();
             // Check what KeyCode we received and Send the relevant KeyEvent to the active window
@@ -518,7 +517,6 @@ public class CustomKeyMapRobot {
             }
         } catch (AWTException e) {
             e.printStackTrace();
-            System.out.println(" Error : " + e);
         }
     }
 }

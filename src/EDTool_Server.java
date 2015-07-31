@@ -1,72 +1,57 @@
 /**
- * Created by the_FONZ on 06/04/2015.
+ * Created by theFONZ on 06/04/2015.
  */
+
+import utils.Constants;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class CustomServerBoard extends JFrame {
-    JLabel imageHeader;
-    JLabel imageFooter;
-    JLabel appInfoFooter;
-    JLabel startGameFooter;
-    JTextField ipAddressTitle;
-    JTextField ipAddressValue;
-    JCheckBox autoRun;
+public class EDTool_Server extends JFrame {
+    static JLabel imageHeader;
+    static JLabel imageFooter;
+    static JLabel appInfoFooter;
+    static JLabel startGameFooter;
+    static JTextField ipAddressTitle;
+    static JTextField ipAddressValue;
+    static JCheckBox autoRun;
     static JButton startServer;
     static JButton stopServerExit;
     static JButton startGame;
 
+    public static void main(String[] args) {
+
+        // Open the main gui
+        EDTool_Server frame = new EDTool_Server();
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setBackground(Color.black);
+        frame.setVisible(true);
+        // Run Update Checker
+        UpdateCheck();
+    }
+
     private static TCPServer mServer;
 
-    public CustomServerBoard() {
+    public EDTool_Server() {
 
-        super("ED_TOOL-server");
+        super(Constants.Me);
 
-        //  Registry Key Locations For Reference ...
-        //  Steam version : HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 359320
-        //  Retail version : HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{696F8871-C91D-4CB1-825D-36BE18065575}_is1
+        // Check folder and resource structure. Create them if needed
+        StructureCheck();
 
-        // Check if location.conf exists, if it does then read the verified location from the file to a usable string
-        File f = new File("data/usr/location.conf");
-        if (f.exists() && !f.isDirectory()) {
-            try {
-                String verifiedLocation = new Scanner(new File("data/usr/location.conf")).useDelimiter("\\A").next();
-                System.out.println(verifiedLocation);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        // If it doesn't already exist then check for EDLaunch.exe location and store that in location.conf
-        else {
-            try {
-                Process p = Runtime.getRuntime().exec("data/bin/getRegLocation.bat");
-                BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                String line;
-                while (true) {
-                    line = input.readLine();
-                    if (line == null) {
-                        break;
-                    }
-                    //create a print writer for writing to a file
-                    PrintWriter out = new PrintWriter(new FileWriter("data/usr/location.conf"));
-                    //output to the file a line
-                    out.println(line + "\\EDLaunch.exe");
-                    //close the file
-                    out.close();
-                }
-            } catch (IOException e) {
-                 e.printStackTrace();
-            }
-        }
-
-        // check for host ip address and show the user
+        // Check for host ip address and show the user
         InetAddress IP = null;
         try {
             IP = InetAddress.getLocalHost();
@@ -74,15 +59,8 @@ public class CustomServerBoard extends JFrame {
             e.printStackTrace();
         }
         assert IP != null;
-        System.out.println("IP of my system is := " + IP.getHostAddress());
 
-        //create new Fonts
-        Font fontSmall = new Font("Copperplate Gothic", Font.PLAIN, 12);
-        Font fontNormal = new Font("Courier", Font.PLAIN, 14);
-        Font fontLarge = new Font("Copperplate Gothic", Font.PLAIN, 14);
-
-        // GUI HERE ....
-        // create new JPanel's
+        // UI Here ..
         JPanel panelFields_imageHeader = new JPanel();
         JPanel panelFields_iconHolder = new JPanel();
         JPanel panelFields_ImageFooter = new JPanel();
@@ -98,14 +76,14 @@ public class CustomServerBoard extends JFrame {
 
         imageHeader = new JLabel();
         imageHeader.setSize(100, 100);
-        imageHeader.setFont(fontSmall);
+        imageHeader.setFont(Constants.fontSmall);
         imageHeader.setOpaque(true);
-        imageHeader.setBackground(Color.decode("#008080"));
+        imageHeader.setBackground(Constants.MyColor);
         imageHeader.setForeground(Color.WHITE);
-        imageHeader.setText(" ED_Tool - Server v2.0.0   [RC-23/07]   ");
+        imageHeader.setText(Constants.Version);
 
         JLabel icon = new JLabel("", JLabel.CENTER);
-        ImageIcon iconLogo = new ImageIcon(getClass().getResource("/imagelight.PNG"));
+        ImageIcon iconLogo = new ImageIcon(getClass().getResource(String.valueOf(Constants.logo)));
         icon.setIcon(iconLogo);
         icon.setOpaque(true);
         icon.setBackground(Color.darkGray);
@@ -113,75 +91,75 @@ public class CustomServerBoard extends JFrame {
         imageFooter = new JLabel();
         imageFooter.setText(" ");
         imageFooter.setSize(100, 100);
-        imageFooter.setFont(fontNormal);
+        imageFooter.setFont(Constants.fontNormal);
         imageFooter.setOpaque(true);
         imageFooter.setBackground(Color.darkGray);
 
         JLabel appName = new JLabel("", JLabel.CENTER);
         appName.setForeground(Color.white);
         appName.setOpaque(true);
-        appName.setFont(fontLarge);
+        appName.setFont(Constants.fontLarge);
         appName.setBackground(Color.darkGray);
 
-        JLabel appInfo = new JLabel(" ( By 'theFONZ' ) ", JLabel.CENTER);
+        JLabel appInfo = new JLabel(Constants.Written_By, JLabel.CENTER);
         appInfo.setForeground(Color.white);
         appInfo.setOpaque(true);
-        appInfo.setFont(fontSmall);
+        appInfo.setFont(Constants.fontSmall);
         appInfo.setBackground(Color.darkGray);
 
         appInfoFooter = new JLabel();
         appInfoFooter.setText(" ");
         appInfoFooter.setSize(100, 100);
-        appInfoFooter.setFont(fontNormal);
+        appInfoFooter.setFont(Constants.fontNormal);
         appInfoFooter.setOpaque(true);
         appInfoFooter.setBackground(Color.darkGray);
 
-        startServer = new JButton("Start Server");
+        startServer = new JButton(Constants.Start);
         startServer.setBackground(Color.lightGray);
         startServer.setForeground(Color.WHITE);
-        startServer.setFont(fontLarge);
-        startServer.setToolTipText("Start the ED_Tool-server");
+        startServer.setFont(Constants.fontLarge);
+        startServer.setToolTipText(Constants.Start_Tooltip);
 
-        stopServerExit = new JButton("Exit to Desktop");
+        stopServerExit = new JButton(Constants.Exit);
         stopServerExit.setBackground(Color.lightGray);
         stopServerExit.setForeground(Color.WHITE);
-        stopServerExit.setFont(fontLarge);
-        stopServerExit.setToolTipText("Stop the ED_Tool-server and Exit to Desktop");
+        stopServerExit.setFont(Constants.fontLarge);
+        stopServerExit.setToolTipText(Constants.Exit_Tooltip);
 
         ipAddressTitle = new JTextField();
         ipAddressTitle.setEditable(false);
         ipAddressTitle.setForeground(Color.lightGray);
         ipAddressTitle.setOpaque(true);
         ipAddressTitle.setBackground(Color.darkGray);
-        ipAddressTitle.setText("  The IP of this Server is :  ");
+        ipAddressTitle.setText(Constants.IP_Header);
 
         ipAddressValue = new JTextField();
         ipAddressValue.setEditable(false);
         ipAddressValue.setForeground(Color.white);
         ipAddressValue.setOpaque(true);
         ipAddressValue.setBackground(Color.darkGray);
-        ipAddressValue.setFont(fontNormal);
+        ipAddressValue.setFont(Constants.fontNormal);
         ipAddressValue.setText(" " + IP.getHostAddress() + " ");
 
         autoRun = new JCheckBox();
         autoRun.setForeground(Color.white);
         autoRun.setOpaque(true);
         autoRun.setBackground(Color.darkGray);
-        autoRun.setFont(fontSmall);
-        autoRun.setText("Auto-Start Server on app startup ?");
-        autoRun.setToolTipText("Set the app to Auto-Start the ED_Tool-server on launch");
+        autoRun.setFont(Constants.fontSmall);
+        autoRun.setText(Constants.Autorun);
+        autoRun.setToolTipText(Constants.Autorun_Tooltip);
 
-        startGame = new JButton("Launch E:D  (server isn't running yet)");
+        startGame = new JButton(Constants.LaunchED_1);
         startGame.setEnabled(false);
         startGame.setBackground(Color.lightGray);
         startGame.setForeground(Color.WHITE);
-        startGame.setFont(fontLarge);
-        startGame.setToolTipText("Launch Elite:Dangerous Game");
+        startGame.setFont(Constants.fontLarge);
+        startGame.setToolTipText(Constants.LaunchED_Tooltip);
 
         startGameFooter = new JLabel();
         startGameFooter.setText(" ");
         startGameFooter.setSize(100, 100);
-        startGameFooter.setFont(fontSmall);
+        startGameFooter.setFont(Constants.fontSmall);
         startGameFooter.setOpaque(true);
         startGameFooter.setBackground(Color.darkGray);
 
@@ -228,18 +206,18 @@ public class CustomServerBoard extends JFrame {
         getContentPane().add(panelFields_ipAddress);
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         getContentPane().setBackground(Color.darkGray);
-        setPreferredSize(new Dimension(290, 595));
+        setPreferredSize(new Dimension(290, 594));
         setResizable(false);
         setVisible(true);
+        //  .. End of UI
 
-        // check for autostart file, if it exists then set jcheckbox accordingly and
-        // then autostart the server
-        File as = new File("data/usr/autostart");
+        // Check for autostart file, if it exists then set Jcheckbox accordingly and then autostart the server
+        File as = new File(String.valueOf(Constants.autostart));
         if (as.exists()) {
             autoRun.setSelected(true);
             startServer();
             try {
-                Thread.sleep(500);                 //1000 milliseconds is one second.
+                Thread.sleep(500);
             } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
@@ -247,7 +225,6 @@ public class CustomServerBoard extends JFrame {
             autoRun.setSelected(false);
         }
 
-        // The Business End HERE ...
         startServer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -266,11 +243,10 @@ public class CustomServerBoard extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String exeLocation = new Scanner(new File("data/usr/location.conf")).useDelimiter("\\A").next();
+                    String exeLocation = new Scanner(new File(String.valueOf(Constants.config))).useDelimiter("\\A").next();
                     Runtime.getRuntime().exec(exeLocation);
                 } catch (Exception w) {
                     w.printStackTrace();
-                    System.out.println("W: mServer was not already connected to client > " + w);
                 }
             }
         });
@@ -279,21 +255,39 @@ public class CustomServerBoard extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Get the current state of the checkbox
-                boolean b = autoRun.isSelected();
-                if (b) {
-                    // Check if location.conf exists, if it does then read the verified location from the file to a usable string
-                    File f = new File("data/usr/autostart");
+                boolean ar = autoRun.isSelected();
+                boolean bool;
+                File f;
+                if (ar) {
+                    // Check if autostart file exists
+                    f = new File(String.valueOf(Constants.autostart));
                     if (!f.exists()) {
                         try {
-                            f.createNewFile();
+                            bool = f.createNewFile();
+                            System.out.println("File created: "+bool);
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
                     }
                 } else {
-                    File f = new File("data/usr/autostart");
+                    f = new File(String.valueOf(Constants.autostart));
                     if (f.exists()) {
-                        f.delete();
+                        bool = f.delete();
+                        System.out.println("File deleted: "+bool);
+                    }
+                }
+            }
+        });
+
+        imageHeader.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                String test = imageHeader.getText();
+                if (test.contains("Update")) {
+                    Runtime rt = Runtime.getRuntime();
+                    try {
+                        rt.exec( "rundll32 url.dll,FileProtocolHandler " + Constants.ReleasesURL);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
                     }
                 }
             }
@@ -305,7 +299,6 @@ public class CustomServerBoard extends JFrame {
             mServer.interrupt();
             while (!Thread.currentThread().isInterrupted()) {
                 try {
-                    System.out.println("S: Exiting");
                     Thread.sleep(10);
                     System.exit(0);
                 } catch (InterruptedException f) {
@@ -314,46 +307,109 @@ public class CustomServerBoard extends JFrame {
             }
         } catch (Exception w) {
             w.printStackTrace();
-            System.out.println("W: mServer was not already connected to client > " + w);
         }
-        {
-            System.out.println("S: Exiting");
-            System.exit(0);
-        }
+        System.exit(0);
     }
 
     public static void startServer() {
         startServer.setEnabled(false);
-        startServer.setText("Server Started || Awaiting client");
+        startServer.setText(Constants.Server_Started);
         startGame.setEnabled(true);
-        startGame.setText("Launch E:D  (Awaiting client)");
-        stopServerExit.setText("Stop Server and Exit");
+        startGame.setText(Constants.LaunchED_2);
+        stopServerExit.setText(Constants.Stop_Exit);
 
-        //creates the object OnMessageReceived asked by the TCPServer constructor
+        // Create the object OnMessageReceived asked by the TCPServer constructor
         mServer = new TCPServer(new TCPServer.OnMessageReceived() {
 
-            //this method declared in the interface from TCPServer class is implemented here
-            //this method is actually a callback method, because it will run every time when it will be called from
-            //TCPServer class (at while)
+            // This method declared in the interface from TCPServer class is implemented here. This is actually a callback
+            // method because it will run every time when it will be called from TCPServer class (at while)
             public void messageReceived(String message) {
-                // check to see if the message was the connection verification message, if it is then change
-                // the buttons text to reflect this
+                // Check to see if the message was the connection verification, if it is then change the buttons text
                 if (Objects.equals(message, "OK")) {
-                    startServer.setText("Server Started || Connected");
-                    startGame.setText(">> Launch Elite: Dangerous <<");
+                    startServer.setText(Constants.Server_Connected);
+                    startGame.setText(Constants.LaunchED_3);
                     stopServerExit.setFocusable(false);
                     startGame.setFocusable(true);
                 }
-                String key = message;
-                // Send incoming data (key) to CustomKeyMapRobot to process
-                // and send the correct SendKeys
+                // Send incoming data (message) to KeyMapRobot to process the correct SendKeys
                 try {
-                    new CustomKeyMapRobot(key);
+                    new KeyMapRobot(message);
                 } catch (AWTException e1) {
                     e1.printStackTrace();
                 }
             }
         });
         mServer.start();
+    }
+
+    public static void StructureCheck() {
+        // Check if directory structure is intact, if not then create it and make checks before continuing
+        boolean bool;
+        if (!Constants.basedir.exists()) {
+            bool = Constants.basedir.mkdir();
+            System.out.println(Constants.basedir+" created: "+bool);
+        }
+        if (!Constants.usrdir.exists()) {
+            bool = Constants.usrdir.mkdir();
+            System.out.println(Constants.usrdir+" created: "+bool);
+        }
+        if (!Constants.bindir.exists()) {
+            bool = Constants.bindir.mkdir();
+            System.out.println(Constants.bindir+" created: "+bool);
+            PrintWriter out = null;
+            try {
+                // Create getRegLocation.bat using predefined string
+                out = new PrintWriter(new FileWriter(String.valueOf(Constants.bat)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            assert out != null;
+            out.println(Constants.RegLocBat);
+            out.close();
+        }
+
+        // Check if location.conf exists, If it doesn't then check for EDLaunch.exe location and store that in location.conf
+        File f = new File(String.valueOf(Constants.config));
+        if (!f.exists()) {
+            try {
+                Process p = Runtime.getRuntime().exec(String.valueOf(Constants.bat));
+                BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                String line;
+                while (true) {
+                    line = input.readLine();
+                    if (line == null) {
+                        break;
+                    }
+                    // Create a print writer for writing to a file
+                    PrintWriter out = new PrintWriter(new FileWriter(String.valueOf(Constants.config)));
+                    out.println(line + Constants.ED_Exe);
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void UpdateCheck () {
+        try {
+            int remoteV;
+            int localV = Integer.parseInt(String.valueOf(Constants.Vc_Version));
+            URL url = new URL(Constants.VersionCheckURL);
+            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+            String str;
+            while ((str = in.readLine()) != null) {
+                remoteV = Integer.parseInt(String.valueOf(str));
+                if (remoteV > localV) {
+                    // Take raw version number from Constants and add "." between each number
+                    String FormattedOnlineVersion = str.replaceAll(".(?=.)", "$0.");
+                    imageHeader.setText(" >> Update Available ! (v" + FormattedOnlineVersion+")");
+                }
+            }
+            in.close();
+        }
+        catch(IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
