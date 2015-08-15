@@ -1,7 +1,11 @@
 /**
  * Created by theFONZ on 06/04/2015.
  */
-import utils.Constants;
+
+package ed_tool_server.tcp_server;
+
+import ed_tool_server.EDTool_Server;
+import ed_tool_server.utils.Constants;
 
 import java.io.*;
 import java.net.ServerSocket;

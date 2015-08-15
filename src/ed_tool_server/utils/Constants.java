@@ -1,7 +1,7 @@
 /**
  * Created by theFONZ on 31/07/2015.
  */
-package utils;
+package ed_tool_server.utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,12 +17,17 @@ public class Constants {
     // ED_Tool-server Logo ..
     public static final ImageIcon logo = new ImageIcon("/imagelight.PNG");
 
+    // Version Numbers ..
+    public static final String Version = " ED_Tool - Server (v2.0.1.0) ";
+    public static final String Vc_Version = "2010";
+
     // ED_Tool-Server Port ..
     public static final int ServerPort = 4444;
 
     // Files ..
     public static final File config = new File("data/usr/location.conf");
     public static final File bat = new File("data/bin/getRegLocation.bat");
+    public static final File autoupdate = new File("data/usr/autoupdate");
     public static final File autostart = new File("data/usr/autostart");
 
     // Folders ..
@@ -62,8 +67,6 @@ public class Constants {
 
     // UI Strings ..
     public static final String Me = "ED_TOOL-server";
-    public static final String Version = " ED_Tool - Server (v2.0.1.0) ";
-    public static final String Vc_Version = "2010";
     public static final String Written_By = " ( By 'theFONZ' ) ";
     public static final String IP_Header = "  The IP of this Server is :  ";
     public static final String Start = "Start Server";
@@ -80,6 +83,8 @@ public class Constants {
     public static final String Exit = "Exit to Desktop";
     public static final String Exit_Tooltip = "Stop the ED_Tool-server and Exit to Desktop";
     public static final String Stop_Exit = "Stop Server and Exit";
+    public static final String Autoupdate = "Self Update Check on app startup ?";
+    public static final String Autoupdate_Tooltip = "Set the app to Auto-Check for updates on launch";
     public static final String Autorun = "Auto-Start Server on app startup ?";
     public static final String Autorun_Tooltip = "Set the app to Auto-Start the ED_Tool-server on launch";
 

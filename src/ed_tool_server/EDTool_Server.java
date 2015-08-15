@@ -1,15 +1,14 @@
-/**
+package ed_tool_server; /**
  * Created by theFONZ on 06/04/2015.
  */
 
-import utils.Constants;
+import ed_tool_server.tcp_keymap_robot.KeyMapRobot;
+import ed_tool_server.tcp_server.TCPServer;
+import ed_tool_server.utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.URL;
@@ -24,6 +23,7 @@ public class EDTool_Server extends JFrame {
     static JLabel startGameFooter;
     static JTextField ipAddressTitle;
     static JTextField ipAddressValue;
+    static JCheckBox autoUpdate;
     static JCheckBox autoRun;
     static JButton startServer;
     static JButton stopServerExit;
@@ -38,8 +38,8 @@ public class EDTool_Server extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setBackground(Color.black);
         frame.setVisible(true);
-        // Run Update Checker
-        UpdateCheck();
+        // Run Startup Auto Checks
+        autoChecks();
     }
 
     private static TCPServer mServer;
@@ -70,6 +70,7 @@ public class EDTool_Server extends JFrame {
         JPanel panelFields_startServer = new JPanel();
         JPanel panelFields_stopServer = new JPanel();
         JPanel panelFields_ipAddress = new JPanel();
+        JPanel panelFields_autoUpdate = new JPanel();
         JPanel panelFields_autoRun = new JPanel();
         JPanel panelFields_startGame = new JPanel();
         JPanel panelFields_startGameFooter = new JPanel();
@@ -149,6 +150,14 @@ public class EDTool_Server extends JFrame {
         autoRun.setText(Constants.Autorun);
         autoRun.setToolTipText(Constants.Autorun_Tooltip);
 
+        autoUpdate = new JCheckBox();
+        autoUpdate.setForeground(Color.white);
+        autoUpdate.setOpaque(true);
+        autoUpdate.setBackground(Color.darkGray);
+        autoUpdate.setFont(Constants.fontSmall);
+        autoUpdate.setText(Constants.Autoupdate);
+        autoUpdate.setToolTipText(Constants.Autoupdate_Tooltip);
+
         startGame = new JButton(Constants.LaunchED_1);
         startGame.setEnabled(false);
         startGame.setBackground(Color.lightGray);
@@ -172,6 +181,8 @@ public class EDTool_Server extends JFrame {
         panelFields_startServer.setLayout(new BorderLayout());
         panelFields_stopServer.setLayout(new BorderLayout());
         panelFields_ipAddress.setLayout(new BoxLayout(panelFields_ipAddress, BoxLayout.X_AXIS));
+        panelFields_autoRun.setLayout(new BoxLayout(panelFields_autoRun, BoxLayout.X_AXIS));
+        panelFields_autoUpdate.setLayout(new BoxLayout(panelFields_autoUpdate, BoxLayout.X_AXIS));
         panelFields_startGame.setLayout(new BorderLayout());
         panelFields_startGameFooter.setLayout(new BorderLayout());
 
@@ -186,6 +197,8 @@ public class EDTool_Server extends JFrame {
         panelFields_stopServer.add(stopServerExit);
         panelFields_ipAddress.add(ipAddressTitle);
         panelFields_ipAddress.add(ipAddressValue);
+        panelFields_autoUpdate.add(autoUpdate);
+        panelFields_autoUpdate.setBackground(Color.darkGray);
         panelFields_autoRun.setBackground(Color.darkGray);
         panelFields_autoRun.add(autoRun);
         panelFields_startGame.add(startGame);
@@ -203,27 +216,14 @@ public class EDTool_Server extends JFrame {
         getContentPane().add(panelFields_stopServer);
         getContentPane().add(panelFields_startGameFooter);
         getContentPane().add(panelFields_autoRun);
+        getContentPane().add(panelFields_autoUpdate);
         getContentPane().add(panelFields_ipAddress);
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         getContentPane().setBackground(Color.darkGray);
-        setPreferredSize(new Dimension(290, 594));
+        setPreferredSize(new Dimension(290, 598));
         setResizable(false);
         setVisible(true);
         //  .. End of UI
-
-        // Check for autostart file, if it exists then set Jcheckbox accordingly and then autostart the server
-        File as = new File(String.valueOf(Constants.autostart));
-        if (as.exists()) {
-            autoRun.setSelected(true);
-            startServer();
-            try {
-                Thread.sleep(500);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        } else {
-            autoRun.setSelected(false);
-        }
 
         startServer.addActionListener(new ActionListener() {
             @Override
@@ -247,6 +247,34 @@ public class EDTool_Server extends JFrame {
                     Runtime.getRuntime().exec(exeLocation);
                 } catch (Exception w) {
                     w.printStackTrace();
+                }
+            }
+        });
+
+        autoUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get the current state of the checkbox
+                boolean ar = autoUpdate.isSelected();
+                boolean bool;
+                File f;
+                if (ar) {
+                    // Check if autostart file exists
+                    f = new File(String.valueOf(Constants.autoupdate));
+                    if (!f.exists()) {
+                        try {
+                            bool = f.createNewFile();
+                            System.out.println("File created: "+bool);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                } else {
+                    f = new File(String.valueOf(Constants.autoupdate));
+                    if (f.exists()) {
+                        bool = f.delete();
+                        System.out.println("File deleted: "+bool);
+                    }
                 }
             }
         });
@@ -294,7 +322,36 @@ public class EDTool_Server extends JFrame {
         });
     }
 
-    public void exitServer() {
+    public static void autoChecks(){
+        // Check for autoupdate and autostart files, if exists then set Jcheckbox's accordingly then call that method
+        File au = new File(String.valueOf(Constants.autoupdate));
+        File as = new File(String.valueOf(Constants.autostart));
+        if (au.exists()) {
+            autoUpdate.setSelected(true);
+            UpdateCheck();
+            try {
+                Thread.sleep(10);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        } else {
+            autoUpdate.setSelected(false);
+        }
+        if (as.exists()) {
+            autoRun.setSelected(true);
+            startServer();
+            try {
+                Thread.sleep(10);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        } else {
+            autoRun.setSelected(false);
+        }
+    }
+
+    private void exitServer() {
+        KeyMapRobot.setNumbLockOn();
         try {
             mServer.interrupt();
             while (!Thread.currentThread().isInterrupted()) {
@@ -333,9 +390,9 @@ public class EDTool_Server extends JFrame {
                 }
                 // Send incoming data (message) to KeyMapRobot to process the correct SendKeys
                 try {
-                    new KeyMapRobot(message);
-                } catch (AWTException e1) {
-                    e1.printStackTrace();
+                    KeyMapRobot.processKey(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -352,6 +409,16 @@ public class EDTool_Server extends JFrame {
         if (!Constants.usrdir.exists()) {
             bool = Constants.usrdir.mkdir();
             System.out.println(Constants.usrdir+" created: "+bool);
+            PrintWriter out = null;
+            try {
+                // Create getRegLocation.bat using predefined string
+                out = new PrintWriter(new FileWriter(String.valueOf(Constants.autoupdate)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            assert out != null;
+            out.println("");
+            out.close();
         }
         if (!Constants.bindir.exists()) {
             bool = Constants.bindir.mkdir();
@@ -401,9 +468,9 @@ public class EDTool_Server extends JFrame {
             while ((str = in.readLine()) != null) {
                 remoteV = Integer.parseInt(String.valueOf(str));
                 if (remoteV > localV) {
-                    // Take raw version number from Constants and add "." between each number
+                    // Take raw version number from Constants and add "." separator between each number for user display
                     String FormattedOnlineVersion = str.replaceAll(".(?=.)", "$0.");
-                    imageHeader.setText(" >> Update Available ! (v" + FormattedOnlineVersion+")");
+                    imageHeader.setText("  * Update Available ! (v" + FormattedOnlineVersion+")   > Download <");
                 }
             }
             in.close();

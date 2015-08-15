@@ -1,2 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: EDTool_Server
+Main-Class: ed_tool_server.EDTool_Server
