@@ -14,9 +14,10 @@
 <br />
 <br />
 
-<center>![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server1.png). 
-![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server2.png).![Screenshot](https://dl.dropboxusercontent.com/u/18271886/ED_Tool-Server/server3.png) 
-</center>
+![](http://i.imgur.com/pEJindH.png)
+![](http://i.imgur.com/FaLuVLr.png)
+![](http://i.imgur.com/klOfO0e.png) 
+
 
 <br />
 <br />
